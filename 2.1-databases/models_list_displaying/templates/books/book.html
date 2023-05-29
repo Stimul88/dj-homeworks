@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}{{ phone.name }}{% endblock %}
+
+{% block content %}
+    <div class="container">
+    <div class="header">
+        <h1><a href="/books">Каталог</a></h1>
+    <div class="content">
+        {% for book in books %}
+            <div class="book col-md-4">
+                <a href="{% url 'date' book.pub_date %}">
+                    <h3>{{ book.name }}</h3>
+                </a>
+                <p>Автор: {{ book.author }} </p>
+                <p>Дата публикации: {{ book.pub_date|date:"Y-m-d" }}</p>
+            </div>
+        {% endfor %}
+        <div class="row">
+            <div class="col-2">
+            {% if page.has_previous %}
+                <a href="/books/{{ prev|date:"Y-m-d" }}"> < {{ prev|date:"Y-m-d" }} </a>
+            {% endif %}
+            </div>
+            <div class="col-2">
+            {% if page.has_next %}
+                <a href="/books/{{ next|date:"Y-m-d" }}"> {{ next|date:"Y-m-d" }} > </a>
+            {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
