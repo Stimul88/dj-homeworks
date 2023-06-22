@@ -11,6 +11,7 @@ class ProductViewSet(ModelViewSet):
     serializer_class = ProductSerializer
     filter_backends = [DjangoFilterBackend, SearchFilter]
     search_fields = ['title', 'description']
+    
 
 
 class StockViewSet(ModelViewSet):
