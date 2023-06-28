@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from advertisements.models import Adv
+from advertisements.models import Advertisement
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -14,7 +14,7 @@ class UserSerializer(serializers.ModelSerializer):
                   'last_name',)
 
 
-class AdvSerializer(serializers.ModelSerializer):
+class AdvertisementSerializer(serializers.ModelSerializer):
     """Serializer для объявления."""
 
     creator = UserSerializer(
@@ -22,7 +22,7 @@ class AdvSerializer(serializers.ModelSerializer):
     )
 
     class Meta:
-        model = Adv
+        model = Advertisement
         fields = ('id', 'title', 'description', 'creator',
                   'status', 'created_at', )
 
@@ -40,21 +40,12 @@ class AdvSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         """Метод для валидации. Вызывается при создании и обновлении."""
-        list_open = Adv.objects.filter(creator=self.context["request"].user, status="OPEN")
-        if len(list_open) >= 10:
-            raise ValidationError("Превышен лимит объявлений в статусе OPEN - 10 шт.")
-
         # TODO: добавьте требуемую валидацию
+
+        if data.get("status", None) == "OPEN":
+            list_open = Advertisement.objects.filter(creator=self.context["request"].user, status="OPEN")
+            if len(list_open) >= 10:
+                raise ValidationError("Превышен лимит объявлений в статусе OPEN - 10 шт.")
 
         return data
 
-    # def validate(self, data):
-    #     """Метод для валидации. Вызывается при создании и обновлении."""
-    #
-    #     # TODO: добавьте требуемую валидацию
-    #     if data.get("status", None) == "OPEN":
-    #         list_open = Adv.objects.filter(creator=self.context["request"].user, status="OPEN")
-    #         if len(list_open) >= 10:
-    #             raise ValidationError("Превышен лимит объявлений в статусе OPEN - 10 шт.")
-    #
-    #     return data

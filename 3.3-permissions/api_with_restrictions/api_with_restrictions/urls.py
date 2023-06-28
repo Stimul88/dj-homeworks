@@ -19,13 +19,15 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
 
-from advertisements.views import AdvViewSet
+from advertisements.views import AdvertisementViewSet
 
-r = DefaultRouter()
-r.register('adv', AdvViewSet)
+router = DefaultRouter()
+router.register('advertisement', AdvertisementViewSet)
 
 
 urlpatterns = [
-    path('api/', include(r.urls)),
+    path('api/', include(router.urls)),
     path('admin/', admin.site.urls),
 ]
+
+

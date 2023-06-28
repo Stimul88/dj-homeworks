@@ -2,21 +2,21 @@ from django.conf import settings
 from django.db import models
 
 
-class AdvStatusChoices(models.TextChoices):
+class AdvertisementStatusChoices(models.TextChoices):
     """Статусы объявления."""
 
     OPEN = "OPEN", "Открыто"
     CLOSED = "CLOSED", "Закрыто"
 
 
-class Adv(models.Model):
+class Advertisement(models.Model):
     """Объявление."""
 
     title = models.TextField()
     description = models.TextField(default='')
     status = models.TextField(
-        choices=AdvStatusChoices.choices,
-        default=AdvStatusChoices.OPEN
+        choices=AdvertisementStatusChoices.choices,
+        default=AdvertisementStatusChoices.OPEN
     )
     creator = models.ForeignKey(
         settings.AUTH_USER_MODEL,
