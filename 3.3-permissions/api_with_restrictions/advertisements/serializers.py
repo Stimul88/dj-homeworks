@@ -1,7 +1,8 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 
-from advertisements.models import Advertisement
+from advertisements.models import Adv
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -13,7 +14,7 @@ class UserSerializer(serializers.ModelSerializer):
                   'last_name',)
 
 
-class AdvertisementSerializer(serializers.ModelSerializer):
+class AdvSerializer(serializers.ModelSerializer):
     """Serializer для объявления."""
 
     creator = UserSerializer(
@@ -21,7 +22,7 @@ class AdvertisementSerializer(serializers.ModelSerializer):
     )
 
     class Meta:
-        model = Advertisement
+        model = Adv
         fields = ('id', 'title', 'description', 'creator',
                   'status', 'created_at', )
 
@@ -39,7 +40,21 @@ class AdvertisementSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         """Метод для валидации. Вызывается при создании и обновлении."""
+        list_open = Adv.objects.filter(creator=self.context["request"].user, status="OPEN")
+        if len(list_open) >= 10:
+            raise ValidationError("Превышен лимит объявлений в статусе OPEN - 10 шт.")
 
         # TODO: добавьте требуемую валидацию
 
         return data
+
+    # def validate(self, data):
+    #     """Метод для валидации. Вызывается при создании и обновлении."""
+    #
+    #     # TODO: добавьте требуемую валидацию
+    #     if data.get("status", None) == "OPEN":
+    #         list_open = Adv.objects.filter(creator=self.context["request"].user, status="OPEN")
+    #         if len(list_open) >= 10:
+    #             raise ValidationError("Превышен лимит объявлений в статусе OPEN - 10 шт.")
+    #
+    #     return data
