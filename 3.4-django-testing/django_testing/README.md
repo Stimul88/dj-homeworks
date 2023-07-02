@@ -105,7 +105,7 @@ pip install -r requirements-dev.txt
 Вам необходимо будет создать базу в postgres и прогнать миграции:
 
 ```base
-manage.py migrate
+python manage.py migrate
 ```
 
 Выполнить команду:

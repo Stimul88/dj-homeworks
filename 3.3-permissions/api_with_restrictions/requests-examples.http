@@ -4,27 +4,25 @@
 
 # получение объявлений
 GET {{baseUrl}}/advertisement/
-Content-Type: application/json
 
 ###
 
 # создание объявления
 POST {{baseUrl}}/advertisement/
 Content-Type: application/json
-Authorization: Token 7f7577f4bc71d548a001e67d583a655faf80bd1b
+Authorization: Token 1421cfae8419869f41448bb80d2f564659657683
 
 {
-  "title": "Шкаф IKEA",
-  "description": "Срочно"
+  "title": "dfg",
+  "description": "завтра"
 }
 
 ###
 
 # попытка поменять объявление
-PATCH {{baseUrl}}/advertisement/1/
+PATCH {{baseUrl}}/advertisement/63/
 Content-Type: application/json
-Authorization: Token 902ef055a9ac93f18327f1f9c45ab059f1a62c7d
-
+Authorization: Token 1421cfae8419869f41448bb80d2f564659657683
 {
   "status": "CLOSED"
 }
@@ -38,5 +36,12 @@ Content-Type: application/json
 ###
 
 # фильтрация по дате
-GET {{baseUrl}}/advertisement/?created_at_before=2020-10-01
+GET {{baseUrl}}/advertisement/?created_at_before=2023-07-02
 Content-Type: application/json
+
+###
+
+
+DELETE {{baseUrl}}/advertisement/46/
+Content-Type: application/json
+Authorization: Token 1421cfae8419869f41448bb80d2f564659657683

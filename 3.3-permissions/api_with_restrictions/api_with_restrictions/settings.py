@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 
+import django_filters.rest_framework
 import rest_framework.throttling
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -75,17 +76,15 @@ TEMPLATES = [
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.TokenAuthentication'
     ],
-    'DEFAULT_TROTTLE_CLASSES': [
-        'rest_framework.throttling.UserRateThrottle',
+    'DEFAULT_THROTTLE_CLASSES': [
         'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle'
     ],
-    'DEFAULT_TROTTLE_RATES': {
-        'user': '20/minute',
-        'anon': '10/minute',
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '1/minute',
+        'user': '2/minute'
     }
 }
 
@@ -141,5 +140,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-
-DEFAULT_AUTO_FIELD='django.db.models.AutoField'
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
