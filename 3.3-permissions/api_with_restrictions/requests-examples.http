@@ -4,6 +4,7 @@
 
 # получение объявлений
 GET {{baseUrl}}/advertisement/
+Content-Type: application/json
 
 ###
 
