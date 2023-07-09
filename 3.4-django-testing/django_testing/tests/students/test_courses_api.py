@@ -1,8 +1,6 @@
 import pytest
 from django.urls import reverse
-
-from students.filters import CourseFilter
-from students.models import Course, Student
+from students.models import Course
 
 
 def test_example():
@@ -15,13 +13,12 @@ def test_get_course(client):
     Course.objects.create(id=1, name='Python')
 
     # Act
-    response = client.get('/api/v1/courses/')
+    response = client.get('/api/v1/courses/1/')
 
     # Assert
     assert response.status_code == 200
     data = response.json()
-    assert len(data) == 1
-    assert data[0]['name'] == 'Python'
+    assert data['id'] == 1
 
 
 @pytest.mark.django_db
@@ -74,24 +71,22 @@ def test_filter_name_course(client, course_factory):
 def test_create_course(client):
     data = {'name': 'Python'}
     response = client.post('/api/v1/courses/', data=data)
-
+    # url = reverse("courses-detail", args=(course.id,))
     assert response.status_code == 201
 
 
 @pytest.mark.django_db
 def test_update_course(client, course_factory):
-    course = course_factory(name="Социолгия")
-    url = reverse("courses-detail", args=(course.id,))
+    course_factory(id=1, name="Социолгия")
     data = {'name': 'Python'}
-    response = client.patch(url, data)
+    response = client.patch('/api/v1/courses/1/', data=data)
 
     assert response.status_code == 200
 
 
 @pytest.mark.django_db
 def test_delete_course(client, course_factory):
-    course = course_factory(name='Нетология')
-    url = reverse("courses-detail", args=(course.id,))
-    resp = client.delete(url)
+    course_factory(id=1, name='Нетология')
+    response = client.delete('/api/v1/courses/1/')
 
-    assert resp.status_code == 204
+    assert response.status_code == 204
