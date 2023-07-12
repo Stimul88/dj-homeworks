@@ -27,4 +27,3 @@ def student_factory():
 @pytest.fixture
 def url_factory():
     return '/api/v1/courses/'
-    # return 'http://127.0.0.1:8000/api/v1/courses/'
